@@ -1,3 +1,15 @@
+# Site title and description
+title: Test Site
+description: This is simply a test Slate site
+
+# Use the Slate theme: https://github.com/pages-themes/slate/
 theme: jekyll-theme-slate
+
 # Only include 3 posts per page
 paginate: 3
+
+# Do not show download links
+show_downloads: false
+
+# Google Analytics
+# google_analytics: 

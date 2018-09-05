@@ -1,8 +1,5 @@
 ---
 layout: default
-title: Test Site
-description: This is simply a test Slate site
-show_downloads: false
 ---
 
 <!-- Loop through paginated posts -->
@@ -12,7 +9,7 @@ show_downloads: false
 
       <h1><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h1>
       <p class="author">
-        <span class="date">{{ post.date }}</span>
+        <span class="date">{{ post.date | date_to_long_string }}</span>
       </p>
       <div class="entry">
         {{ post.excerpt }}
