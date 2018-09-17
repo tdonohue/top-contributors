@@ -5,11 +5,14 @@ description: Ranking the Top DSpace GitHub contributors, since 2018
 # https://github.com/pages-themes/cayman
 theme: jekyll-theme-cayman
 
+# Only include 3 posts per page
+paginate: 3
+
 # Do not show download links
 show_downloads: false
 
 # Google Analytics
-# google_analytics: 
+# google_analytics:
 
 # Only include 3 posts per page
 paginate: 3
