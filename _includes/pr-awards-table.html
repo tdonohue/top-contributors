@@ -1,0 +1,46 @@
+{% comment %}Create awards emoji, and reset count to zero (awards given out). {% endcomment %}
+{% assign awards = ":trophy:,:star:,:clap:" | split: ',' %}
+{% assign award-counter = 0 %}
+
+{% comment %}Loop through our CSV data, adding to table {% endcomment %}
+<table>
+    <thead>
+		{% comment %}Add each column as a header{% endcomment %}
+        {% for column in dataset[0] %}
+            <th scope="col">{{ column[0] }}</th>
+        {% endfor %}
+    </thead>
+    <tbody>
+	{% comment %}Add each row's data{% endcomment %}
+    {% for row in dataset %}
+        <tr>
+		  {% comment %}
+		     In the first column, we hand out awards for Top 3 values of Count. 
+		     This requires some comparison of Count values to previous row.
+		  {% endcomment %}
+		   <th scope="row"><a href="https://github.com/{{ row.User }}">{{ row.User }}</a>
+		   {% if award-counter < 3 %} 
+		     {% assign curr-count = dataset[forloop.index0].Count | plus: 0 %}
+			 {% assign prev-index = forloop.index0 | minus: 1 %}
+			 {% assign prev-count = dataset[prev-index].Count | plus: 0%}
+		     {% if forloop.first or curr-count == prev-count %}
+			   {{ awards[award-counter] }}
+			 {% else %}
+			   {% assign award-counter = award-counter | plus: 1 %}
+			   {% if award-counter < 3 %}
+			     {{ awards[award-counter] }}
+		       {% endif %}
+		     {% endif %}
+		   {% endif %}
+		   </th>
+		   <td>{{ row.Count }}</td>
+		   <td>
+			 {% assign links = row.URLs | split: ";" %}
+			 {% for link in links %}
+			    <a href="{{link}}">{{link | truncate: 60 }}</a><br/>
+			 {% endfor %}
+		   </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

@@ -1,15 +1,20 @@
 # Site title and description
-title: Test Site
-description: This is simply a test Slate site
+title: DSpace Top Contributors
+description: Ranking the Top DSpace GitHub contributors, since 2018
 
-# Use the Slate theme: https://github.com/pages-themes/slate/
-theme: jekyll-theme-slate
-
-# Only include 3 posts per page
-paginate: 3
+# https://github.com/pages-themes/cayman
+theme: jekyll-theme-cayman
 
 # Do not show download links
 show_downloads: false
 
 # Google Analytics
 # google_analytics: 
+
+# Only include 3 posts per page
+paginate: 3
+
+# Enable plugins
+plugins:
+  - jekyll-paginate
+  - jemoji

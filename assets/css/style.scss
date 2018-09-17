@@ -4,6 +4,10 @@
 @import "{{ site.theme }}";
 
 /* Custom CSS goes here */
+body section.page-header {
+    padding: 0px;
+}
+
 .date {
 	font-size: 14px;
 	color: #888888;
@@ -28,3 +32,22 @@
 .pagination {
     text-align: center;
  }
+ 
+img.emoji {
+    padding: 0px;
+	margin: 0px;
+	border: 0px;
+}
+
+ul.awards {
+    list-style: none;
+	padding: 0px;
+}
+ul.awards li {
+    display: inline-block;
+	padding: 5px;
+}
+
+td, th {
+    vertical-align: top;
+}

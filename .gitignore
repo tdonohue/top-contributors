@@ -1,0 +1,3 @@
+# GitIgnore for GitHub Pages
+_site
+.sass-cache
