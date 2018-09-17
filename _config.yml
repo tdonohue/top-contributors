@@ -3,7 +3,7 @@ title: Test Site
 description: This is simply a test Slate site
 
 # Use the Slate theme: https://github.com/pages-themes/slate/
-theme: jekyll-theme-slate
+theme: jekyll-theme-cayman
 
 # Only include 3 posts per page
 paginate: 3
