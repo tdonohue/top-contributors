@@ -1,7 +1,11 @@
 ---
 layout: default
 ---
-<a href="{{ site.url }}">Home</a>
+{% if jekyll.environment == "production" %}
+  <a href="{{ site.github.url }}">Home</a>
+{% else %}
+  <a href="{{ site.url }}">Home</a>
+{% endif %}
 
 <article class="post">
   <h1>{{ page.title }}</h1>
