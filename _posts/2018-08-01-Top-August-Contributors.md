@@ -3,7 +3,8 @@ layout: post
 title:  "Top August Contributors"
 month: 2018-08
 ---
-The Awards for August 2018 go to...
+
+**The Awards for August 2018 go to...**
 
 * [Top Pull Request Creators](#top-pr-creators)
 * [Top Pull Request Reviewers](#top-pr-reviewers)
