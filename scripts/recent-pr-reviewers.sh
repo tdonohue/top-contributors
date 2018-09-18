@@ -115,13 +115,13 @@ while [ -n "$CURSOR" ]; do
   check_errors=`$JQ_EXEC 'if .errors then .errors[].message else empty end' api_output.json`
   if [ -n "$check_errors" ]; then
     echo "ERROR FROM GITHUB API: ${check_errors}"
-	exit 1
+    exit 1
   fi
 
   # If more_results is NOT empty, then we have another page
   if [ -n "$more_results" ]; then
     echo "Pagination cursor found: $more_results ... querying for next page"
-	# The "endCursor" value (from previous request) should be in $more_results.
+    # The "endCursor" value (from previous request) should be in $more_results.
     # Create an "after:" query param for the next request to get the next set of results.
     CURSOR="after: ${more_results}, "
   else
@@ -137,8 +137,8 @@ while [ -n "$CURSOR" ]; do
   else
      echo "Appending new set of results to output JSON file ${OUTPUT_JSON}."
      # This merges/adds the "data.search.edges[]" array of api_output.json into that of $OUTPUT_JSON, therefore combining results lists
-	 # See https://stackoverflow.com/a/42013459/3750035
-	 # The output is temporarily written to a "temp" file, and then moved over into $OUTPUT_JSON (so that that file has the combined results).
+     # See https://stackoverflow.com/a/42013459/3750035
+     # The output is temporarily written to a "temp" file, and then moved over into $OUTPUT_JSON (so that that file has the combined results).
      $JQ_EXEC -n 'reduce inputs as $i (.; .data.search.edges += $i.data.search.edges)' $OUTPUT_JSON api_output.json > temp && mv temp $OUTPUT_JSON
   fi
   
