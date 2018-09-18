@@ -1,12 +1,12 @@
 
 # Top DSpace Contributors
 
-This GitHub Pages site lists the top [DSpace GitHub](https://github.com/DSpace) contributors *per month*. More information on how contributions are calculated is below.
+This GitHub Pages site lists the top [DSpace GitHub](https://github.com/DSpace) contributors *per month*. 
 
 ## How are each of the Top Contributors awards calculated? How did you arrive at these counts?
 
 ### General Notes
-These statistics are ONLY gathered for activities within the [DSpace organization in GitHub](https://github.com/DSpace).  These means that all statistics are an aggregate from all projects under that organization, but they do NOT include activities in [DSpace-Labs](https://github.com/DSpace-Labs).
+These statistics are ONLY gathered for activities within the [DSpace organization in GitHub](https://github.com/DSpace).  This means that all statistics are an aggregate from all projects under that organization, but they do NOT include activities in [DSpace-Labs](https://github.com/DSpace-Labs) or other organizations.
 
 ### Top PR Creators (per month)
 
@@ -38,13 +38,16 @@ The statistical results are gathered and compiled using two primary tools:
     * The CSV output is uploaded as a [Jekyll Data File](https://jekyllrb.com/docs/datafiles/) (under `_data/[YYYY-MM]/*.csv`)
     * A new Jekyll blog post is created (under `_posts`) which uses the data file to create an HTML table of output.
     * Each blog post uses the same template to translate the CSV contents into an HTML table (and give out the "awards", which are just emoji). This template makes heavy use of the [Liquid templating language](https://shopify.github.io/liquid/) (used by Jekyll). See the [`pr-awards-table.html` template](https://github.com/tdonohue/top-contributors/blob/master/_includes/pr-awards-table.html)
+    
+The statistical scripts are available in this GitHub repository in the `scripts/` folder. They are Bash scripts that call GitHub GraphQL API (using `curl`), save the results to a local JSON file, and then parse that JSON file using `jq`, saving the final results in CSV.
 
 ### Running the scripts
 
 The scripts that compile these statistics are available in `scripts/` folder. They can be run from the commandline (in Windows or Linux).
 
 1. [Download and install jq](https://stedolan.github.io/jq/) on your system.  It comes packaged as a binary, so simply download it to a location on your harddrive.
-2. Update the `script/*.sh` files, ensuring these variables are filled out:
+2. Ensure Bash (or Git Bash on Windows) is installed on your system. You'll also need `curl`
+3. Update the `script/*.sh` files, ensuring these variables are filled out:
     * `GITHUB_TOKEN` : must be set to your own, personal GitHub access token (required for access to GitHub GraphQL). See https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/
     * `JQ_EXEC` : the path / name of the `jq` script on your system. This can be a relative or absolute path.
     * `START_DATE` : specify the starting date for the statistics you wish to gather
@@ -52,7 +55,7 @@ The scripts that compile these statistics are available in `scripts/` folder. Th
     * `OUTPUT_JSON` : Optionally, change the name of the JSON output file (this is the raw JSON output from GitHub GraphQL)
     * `OUTPUT_CSV` : Optionally, change the name of the final CSV output file (this is the final statistics, calculated via `jq` from the raw JSON output).
 3. Run the script, e.g. `./[script].sh`.
-    * On Windows, you MUST have Git Bash (or a similar Bash tool) installed.  Scripts must be run by passing them to `sh`, e.g. `sh ./[script].sh`
+    * On Windows, scripts must be run by passing them to `sh`, e.g. `sh ./[script].sh`
 
 ## Testing this GitHub Pages site locally
 
