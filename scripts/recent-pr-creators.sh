@@ -14,11 +14,11 @@
 # https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/
 GITHUB_TOKEN="[add-your-token]"
 
-# Set the report range
+# Set the report range (a month is recommended)
 # Date to start report from (anything on or after this date will be included)
 START_DATE="2018-08-01T00:00:00Z"
 # Date to end report before (anything before this date will be included)
-BEFORE_DATE="2018-09-01T00:00:00Z"
+END_DATE="2018-09-01T00:00:00Z"
 
 # Location of 'jq' (v1.5) on your system.
 # https://stedolan.github.io/jq/download/
@@ -29,11 +29,11 @@ JQ_EXEC="./jq-win64"
 # This file will store the raw JSON output from GitHub. If multiple pages of results
 # are found, this will be a JSON representing the combination of all pages.
 # (NOTE however that GitHub APIs supposedly have a max limit of returning only 1,000 results per query)
-OUTPUT_JSON="prs-output.json"
+OUTPUT_JSON="pr-creators.json"
 
 # Location of CSV output file
 # This file will be the final ranked CSV output (parsed from the raw JSON)
-OUTPUT_CSV="prs-output.csv"
+OUTPUT_CSV="pr-creators.csv"
 
 
 # Before we get started, remove the $OUTPUT_JSON (from any previous script runs)
@@ -56,13 +56,16 @@ while [ -n "$CURSOR" ]; do
     CURSOR=""
   fi
 
+  # Query in GitHub GraphQL format
   # Query for first 100 DSpace Pull Requests created in last month.
   # This queries across all projects in the DSpace org: https://github.com/DSpace/
-  # NOTE: Make sure to escape any double quotes (\") in query
+  #
   # Test this query online at https://developer.github.com/v4/explorer/
   # (When testing this query you may wish to append "sort:created-asc" to see results in a logical order)
+  #
+  # NOTE: Make sure to escape any double quotes (\") in query
   github_query="query {
-    search (first: 100, $CURSOR type: ISSUE, query:\"type:pr user:DSpace created:$START_DATE..$BEFORE_DATE\") {
+    search (first: 100, $CURSOR type: ISSUE, query:\"type:pr user:DSpace created:$START_DATE..$END_DATE\") {
       edges {
         node {
           ... on PullRequest {
@@ -119,11 +122,11 @@ while [ -n "$CURSOR" ]; do
   
   # If final output file doesn't exist
   if [ ! -f $OUTPUT_JSON ]; then
-     echo "File ${OUTPUT_JSON} not found. Creating it."
+     echo "Creating output JSON file ${OUTPUT_JSON}."
      # Copy API output to final output
      $JQ_EXEC '.' $PAGE_OUTPUT > $OUTPUT_JSON
   else
-     echo "File ${OUTPUT_JSON} found. Appending to it."
+     echo "Appending new set of results to output JSON file ${OUTPUT_JSON}."
      # This merges/adds the "data.search.edges[]" array of $PAGE_OUTPUT into that of $OUTPUT_JSON, therefore combining results lists
 	 # See https://stackoverflow.com/a/42013459/3750035
 	 # The output is temporarily written to a "temp" file, and then moved over into $OUTPUT_JSON (so that that file has the combined results).
@@ -144,10 +147,10 @@ done
 #    1. Return all "data.search.edges" from JSON
 #    2. Map them to an array of results, only selecting ones where PR Status (.node.state) is either "OPEN" or "MERGED"
 #    3. Group them by PR author (.node.author.login)
-#    4. Map them to a simple array of "user", "prs" (PR URLs), and "count" (# of PRs)
+#    4. Map them to a simple array of "user", "prs" (PR URLs, sorted), and "count" (# of PRs)
 #    5. Sort that array by count (ascending)
 #    6. Finally, reverse the order (to get descending sort)
-jq_query='.data.search.edges | map(select (.node.state | contains("OPEN", "MERGED"))) | group_by(.node.author.login) | map( {user: .[0].node.author.login, prs: [.[].node.url], count: . | length } ) | sort_by(.count) | reverse'
+jq_query='.data.search.edges | map(select (.node.state | contains("OPEN", "MERGED"))) | group_by(.node.author.login) | map( {user: .[0].node.author.login, prs: [.[].node.url] | sort | reverse, count: . | length } ) | sort_by(.count) | reverse'
 
 # Uncomment next two lines to convert to CSV OUTPUT(with headers)
 # This does the following
