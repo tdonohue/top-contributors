@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "Top August Contributors"
-month: 2018-08
-month-text: "August 2018"
+title:  "Top June Contributors"
+month: 2018-06
+month-text: "June 2018"
 ---
 
 **The Awards for {{page.month-text}} go to...**
