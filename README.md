@@ -6,9 +6,10 @@ This GitHub Pages site lists the top [DSpace GitHub](https://github.com/DSpace) 
 ## How are the Top Contributors calculated / counted?
 
 ### General Notes
+
 These statistics are ONLY gathered for activities within the [DSpace organization in GitHub](https://github.com/DSpace).  This means that all statistics are an aggregate from all projects under that organization, but they do NOT include activities in [DSpace-Labs](https://github.com/DSpace-Labs) or other organizations.
 
-### Top PR Creators (per month)
+### Top Pull Request Creators (per month)
 
 The list of Top Pull Request creators is calculated based on the following:
 * Pull Request MUST be created under a [DSpace GitHub](https://github.com/DSpace) project.
@@ -16,16 +17,18 @@ The list of Top Pull Request creators is calculated based on the following:
 * Pull Request MUST be in the "open" or "merged" state. At this time, we do NOT count "closed" PRs, as it is assumed they were invalid and/or replaced by a different PR.
 * Pull Requests are only credited based on the *author* of the PR.  We do not check for author(s) of individual commits.
 
-For the exact calculations, see the [recent-pr-creators.sh](https://github.com/tdonohue/top-contributors/blob/master/scripts/recent-pr-creators.sh) script, and the [Where do these statistics come from?](#Where do these statistics come from?) section below.
+For the exact calculations, see the [recent-pr-creators.sh](https://github.com/tdonohue/top-contributors/blob/master/scripts/recent-pr-creators.sh) script, and the [Where do these statistics come from?](#where-do-these-statistics-come-from) section below.
 
-### Top PR Reviewers (per month)
+### Top Pull Request Reviewers (per month)
 
 The list of Top Pull Request reviewrs is calculated based on the following:
 * The Review MUST be on a Pull Request created under a [DSpace GitHub](https://github.com/DSpace) project.
 * The Review MUST be a [GitHub Pull Request Review](https://help.github.com/articles/about-pull-request-reviews/). General comments on PRs are NOT included in the count.
 * The Review MUST be created in that given month. 
 * Reviews are counted regardless of the status of the Pull Request (even if the PR is now "closed", your review is counted).
-* Only one review per Pull Request is counted. It is possible to submit multiple reviews per PR, but we are only counting the number of Pull Requests you have reviewed and NOT the number of reviews submitted. 
+* Only one review per Pull Request is counted. It is possible to submit multiple reviews per PR, but we are only counting the number of Pull Requests you have reviewed and NOT the number of reviews submitted.
+
+For the exact calculations, see the [recent-pr-reviewers.sh](https://github.com/tdonohue/top-contributors/blob/master/scripts/recent-pr-reviewers.sh) script, and the [Where do these statistics come from?](#where-do-these-statistics-come-from) section below.
 
 ## Where do these statistics come from? 
 
