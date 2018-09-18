@@ -3,7 +3,7 @@
 
 This GitHub Pages site lists the top [DSpace GitHub](https://github.com/DSpace) contributors *per month*. 
 
-## How are each of the Top Contributors awards calculated? How did you arrive at these counts?
+## How are the Top Contributors calculated / counted?
 
 ### General Notes
 These statistics are ONLY gathered for activities within the [DSpace organization in GitHub](https://github.com/DSpace).  This means that all statistics are an aggregate from all projects under that organization, but they do NOT include activities in [DSpace-Labs](https://github.com/DSpace-Labs) or other organizations.
