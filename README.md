@@ -53,12 +53,12 @@ The scripts that compile these statistics are available in `scripts/` folder. Th
 3. Update the `script/*.sh` files, ensuring these variables are filled out:
     * `GITHUB_TOKEN` : must be set to your own, personal GitHub access token (required for access to GitHub GraphQL). See https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/
     * `JQ_EXEC` : the path / name of the `jq` script on your system. This can be a relative or absolute path.
-    * `START_DATE` : specify the starting date for the statistics you wish to gather
-    * `END_DATE`  : specify the end date for the statistics you wish to gather. Keep in mind that the date range should likely only be *one month* at a maximum. Larger ranges may not work properly, as GitHub GraphQL only returns a limited number of total results
     * `OUTPUT_JSON` : Optionally, change the name of the JSON output file (this is the raw JSON output from GitHub GraphQL)
     * `OUTPUT_CSV` : Optionally, change the name of the final CSV output file (this is the final statistics, calculated via `jq` from the raw JSON output).
-3. Run the script, e.g. `./[script].sh`.
-    * On Windows, scripts must be run by passing them to `sh`, e.g. `sh ./[script].sh`
+3. Run the script, e.g. `./[script].sh YYYY-MM`.
+    * On Windows, scripts must be run by passing them to `sh`, e.g. `sh ./[script].sh YYYY-MM`
+    * By default, the script generates a monthly report based on the given month.
+    * Optionally, you can also pass in January and "year" to generate a yearly report, e.g. `./[script].sh 2018-01 year`. Keep in mind, this is not well tested and depends heavily on whether the GitHub API will give you all the data for this given year.
 
 ## Testing this GitHub Pages site locally
 
