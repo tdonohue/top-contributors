@@ -7,7 +7,8 @@ This GitHub Pages site lists the top [DSpace GitHub](https://github.com/DSpace) 
 
 ### General Notes
 
-These statistics are ONLY gathered for activities within the [DSpace organization in GitHub](https://github.com/DSpace).  This means that all statistics are an aggregate from all projects under that organization, but they do NOT include activities in [DSpace-Labs](https://github.com/DSpace-Labs) or other organizations.
+* These statistics are ONLY gathered for activities within the [DSpace organization in GitHub](https://github.com/DSpace).  This means that statistics are an aggregate from all projects under that organization, but they do NOT include activities in [DSpace-Labs](https://github.com/DSpace-Labs) or other organizations.
+* A user's institution/company is *only displayed if it is available in the GitHub user profile*. If you wish your institution to be listed, add it as your "Company" in your GitHub profile. Similar to in your GitHub profile, you can `@mention` your institution's GitHub organization to generate a link to it. (Keep in mind, any updated/changed institution information will not appear until the next report)
 
 ### Top Pull Request Creators (per month)
 
