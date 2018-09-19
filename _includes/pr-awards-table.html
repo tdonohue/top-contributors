@@ -14,24 +14,34 @@
     {% comment %}Add each row's data{% endcomment %}
     {% for row in dataset %}
         <tr>
-          {% comment %}
-             In the first column, we hand out awards for Top 3 values of Count. 
-             This requires some comparison of Count values to previous row.
-          {% endcomment %}
-           <th scope="row"><a href="https://github.com/{{ row.User }}">{{ row.User }}</a>
-           {% if award-counter < 3 %} 
-             {% assign curr-count = dataset[forloop.index0].Count | plus: 0 %}
-             {% assign prev-index = forloop.index0 | minus: 1 %}
-             {% assign prev-count = dataset[prev-index].Count | plus: 0%}
-             {% if forloop.first or curr-count == prev-count %}
-               {{ awards[award-counter] }}
-             {% else %}
-               {% assign award-counter = award-counter | plus: 1 %}
-               {% if award-counter < 3 %}
+           <th scope="row">
+             {% assign userInfo = row.User | split: ";" %}
+             {% assign login = userInfo[0] %}
+             {% assign org = userInfo[1] %}
+		     <a href="https://github.com/{{ login }}">{{ login }}</a>
+             {% comment %}
+               Top 3 values of Count get an award (emoji). Compare to previous
+               values of count, in case of a tie. Data is assumed sorted by Count.
+             {% endcomment %}
+             {% if award-counter < 3 %}
+               {% assign curr-count = dataset[forloop.index0].Count | plus: 0 %}
+               {% assign prev-index = forloop.index0 | minus: 1 %}
+               {% assign prev-count = dataset[prev-index].Count | plus: 0%}
+               {% if forloop.first or curr-count == prev-count %}
                  {{ awards[award-counter] }}
+               {% else %}
+                 {% assign award-counter = award-counter | plus: 1 %}
+                 {% if award-counter < 3 %}
+                   {{ awards[award-counter] }}
+                 {% endif %}
                {% endif %}
              {% endif %}
-           {% endif %}
+             {% comment %} Display org link, if @ reference exists. Else just display name, if exists {% endcomment %}
+             {% if org contains '@' %}
+                <div class="org">(<a href="https://github.com/{{ org | remove: '@' }}">{{ org | remove: '@' }}</a>)</div>
+             {% elsif org %}
+                <div class="org">({{ org }})</div>
+             {% endif %}
            </th>
            <td>{{ row.Count }}</td>
            <td>
