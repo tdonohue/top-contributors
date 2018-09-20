@@ -22,7 +22,7 @@ For the exact calculations, see the [recent-pr-creators.sh](https://github.com/t
 
 ### Top Pull Request Reviewers (per month)
 
-The list of Top Pull Request reviewrs is calculated based on the following:
+The list of Top Pull Request reviewers is calculated based on the following:
 * The Review MUST be on a Pull Request created under a [DSpace GitHub](https://github.com/DSpace) project.
 * The Review MUST be a [GitHub Pull Request Review](https://help.github.com/articles/about-pull-request-reviews/). General comments on PRs are NOT included in the count.
 * The Review MUST be created in that given month. 
