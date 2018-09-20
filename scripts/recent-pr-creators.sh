@@ -20,6 +20,10 @@ GITHUB_TOKEN="[add-your-token]"
 # On Windows, remove the ".exe" from the filename (e.g. "./jq-win64")
 JQ_EXEC="./jq-win64"
 
+# GitHub Organization to search within.
+# At this time, only one organization is supported.
+GITHUB_ORG="DSpace"
+
 # Location of JSON output file
 # This file will store the raw JSON output from GitHub. If multiple pages of results
 # are found, this will be a JSON representing the combination of all pages.
@@ -79,15 +83,15 @@ while [ -n "$CURSOR" ]; do
   fi
 
   # Query in GitHub GraphQL format
-  # Query for first 100 DSpace Pull Requests created in last month.
-  # This queries across all projects in the DSpace org: https://github.com/DSpace/
+  # Query for first 100 Pull Requests created in last month.
+  # This queries across all projects in the $GITHUB_ORG
   #
   # Test this query online at https://developer.github.com/v4/explorer/
   # (When testing this query you may wish to append "sort:created-asc" to see results in a logical order)
   #
   # NOTE: Make sure to escape any double quotes (\") in query
   github_query="query {
-    search (first: 100, $CURSOR type: ISSUE, query:\"type:pr user:DSpace created:$START_DATE..$END_DATE\") {
+    search (first: 100, $CURSOR type: ISSUE, query:\"type:pr user:$GITHUB_ORG created:$START_DATE..$END_DATE\") {
       edges {
         node {
           ... on PullRequest {
