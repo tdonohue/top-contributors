@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Script to report on top PR Reviewers in a given date range.
 #
@@ -17,6 +17,8 @@ GITHUB_TOKEN="[add-your-token]"
 
 # Location of 'jq' (v1.5) on your system.
 # https://stedolan.github.io/jq/download/
+# On Linux
+#JQ_EXEC = "jq"
 # On Windows, remove the ".exe" from the filename (e.g. "./jq-win64")
 JQ_EXEC="./jq-win64"
 

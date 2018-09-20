@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Script to report on top PR Creators in a given date range.
 # Only counts PRs which are currently OPEN or already MERGED. Any PRs which are simply CLOSED are assumed "invalid" and not counted.
@@ -15,6 +15,8 @@ GITHUB_TOKEN="[add-your-token]"
 
 # Location of 'jq' (v1.5) on your system.
 # https://stedolan.github.io/jq/download/
+# On Linux
+#JQ_EXEC = "jq"
 # On Windows, remove the ".exe" from the filename (e.g. "./jq-win64")
 JQ_EXEC="./jq-win64"
 
