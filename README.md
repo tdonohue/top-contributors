@@ -55,8 +55,10 @@ The scripts that compile these statistics are available in `scripts/` folder. Th
 3. Update the `script/*.sh` files, ensuring these variables are filled out:
     * `GITHUB_TOKEN` : must be set to your own, personal GitHub access token (required for access to GitHub GraphQL). See https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/
     * `JQ_EXEC` : the path / name of the `jq` script on your system. This can be a relative or absolute path.
-    * `OUTPUT_JSON` : Optionally, change the name of the JSON output file (this is the raw JSON output from GitHub GraphQL)
-    * `OUTPUT_CSV` : Optionally, change the name of the final CSV output file (this is the final statistics, calculated via `jq` from the raw JSON output).
+    * `GITHUB_ORGS` : Provide a list of one (or more) GitHub organization(s) to search across. If multiple are specified, they should be space separated. Each Org's results will be stored in a separate OUTPUT_CSV file.
+    * `EXCLUDE_REPO` : Optionally exclude one GitHub repository from search results. This is useful if you want to exclude the "top-contributors" repository itself from its own statistics.
+    * `OUTPUT_JSON_SUFFIX` : Optionally, change the name of the JSON output file (this is the raw JSON output from GitHub GraphQL)
+    * `OUTPUT_CSV_SUFFIX` : Optionally, change the name of the final CSV output file (this is the final statistics, calculated via `jq` from the raw JSON output).
 3. Run the script, e.g. `./[script].sh YYYY-MM`.
     * On Windows, scripts must be run by passing them to `sh`, e.g. `sh ./[script].sh YYYY-MM`
     * By default, the script generates a monthly report based on the given month.
