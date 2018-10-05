@@ -3,19 +3,10 @@ layout: post
 title:  "Top August Contributors"
 month: 2018-08
 month-text: "August 2018"
+software: DSpace
 ---
+**The {{page.software}} Awards for {{page.month-text}} go to...**
 
-**The Awards for {{page.month-text}} go to...**
-
-* [Top Pull Request Creators](#top-pull-request-creators)
-* [Top Pull Request Reviewers](#top-pull-request-reviewers)
-
-## Top Pull Request Creators
-These individuals created the most Pull Requests in {{page.month-text}}. For information on how these totals were calculated, see the [README]({{site.github.repository_url}}/blob/master/README.md)
-{% assign dataset=site.data[page.month].pr-creators %}
-{% include pr-awards-table.html %}
-
-## Top Pull Request Reviewers
-These individuals reviewed the most Pull Requests in {{page.month-text}}. For information on how these totals were calculated, see the [README]({{site.github.repository_url}}/blob/master/README.md)
-{% assign dataset=site.data[page.month].pr-reviewers %}
-{% include pr-awards-table.html %}
+{% comment %}Include monthly-awards.md and convert to HTML{% endcomment %}
+{% capture monthly-awards %}{% include monthly-awards.md %}{% endcapture %}
+{{ monthly-awards | markdownify }}
