@@ -28,6 +28,11 @@ JQ_EXEC="./jq-win64"
 GITHUB_ORGS="DSpace"
 #GITHUB_ORGS="DSpace DSpace-Labs"
 
+# A single repository to exclude from all searches
+# This allows you to exclude the repository for this "top-contributors" tool
+# from all statistics / results.
+EXCLUDE_REPO="DSpace/top-contributors"
+
 # Suffix of JSON output file (prefix is Org name)
 # This file will store the raw JSON output from GitHub. If multiple pages of results
 # are found, this will be a JSON representing the combination of all pages.
@@ -96,6 +101,12 @@ for GITHUB_ORG in $GITHUB_ORGS; do
         CURSOR=""
       fi
 
+      # If $EXCLUDE_REPO specified, then build param to exclude this repo
+      if [ -n "$EXCLUDE_REPO" ]; then
+        # https://help.github.com/articles/understanding-the-search-syntax/#exclude-certain-results
+        EXCLUDE_REPO="-repo:$EXCLUDE_REPO"
+      fi
+
       # Query in GitHub GraphQL format
       # Query for the first 50 Pull Request (across all projects in the $GITHUB_ORG), updated since the $START_DATE
       # AND having >0 comments (In GitHub all reviews are considered comments).
@@ -110,7 +121,7 @@ for GITHUB_ORG in $GITHUB_ORGS; do
       # NOTE: Make sure to escape any double quotes (\") in query
       # NOTE: Decreasing the "first" value of Issues returned to 50 makes this query less prone to response errors, but requires more pages to gather.
       github_query="query {
-        search (first: 50, $CURSOR type: ISSUE, query:\"type:pr user:$GITHUB_ORG comments:>0 updated:>=$START_DATE\") {
+        search (first: 50, $CURSOR type: ISSUE, query:\"type:pr user:$GITHUB_ORG $EXCLUDE_REPO comments:>0 updated:>=$START_DATE\") {
           edges {
             node {
               ... on PullRequest {

@@ -26,6 +26,11 @@ JQ_EXEC="./jq-win64"
 GITHUB_ORGS="DSpace"
 #GITHUB_ORGS="DSpace DSpace-Labs"
 
+# A single repository to exclude from all searches
+# This allows you to exclude the repository for this "top-contributors" tool
+# from all statistics / results.
+EXCLUDE_REPO="DSpace/top-contributors"
+
 # Suffix of JSON output file (prefix is Org name)
 # This file will store the raw JSON output from GitHub. If multiple pages of results
 # are found, this will be a JSON representing the combination of all pages.
@@ -94,6 +99,12 @@ for GITHUB_ORG in $GITHUB_ORGS; do
         CURSOR=""
       fi
 
+      # If $EXCLUDE_REPO specified, then build param to exclude this repo
+      if [ -n "$EXCLUDE_REPO" ]; then
+        # https://help.github.com/articles/understanding-the-search-syntax/#exclude-certain-results
+        EXCLUDE_REPO="-repo:$EXCLUDE_REPO"
+      fi
+
       # Query in GitHub GraphQL format
       # Query for first 100 Pull Requests created in last month.
       # This queries across all projects in the $GITHUB_ORG
@@ -103,7 +114,7 @@ for GITHUB_ORG in $GITHUB_ORGS; do
       #
       # NOTE: Make sure to escape any double quotes (\") in query
       github_query="query {
-        search (first: 100, $CURSOR type: ISSUE, query:\"type:pr user:$GITHUB_ORG created:$START_DATE..$END_DATE\") {
+        search (first: 100, $CURSOR type: ISSUE, query:\"type:pr user:$GITHUB_ORG $EXCLUDE_REPO created:$START_DATE..$END_DATE\") {
           edges {
             node {
               ... on PullRequest {
