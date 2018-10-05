@@ -62,6 +62,14 @@ The scripts that compile these statistics are available in `scripts/` folder. Th
     * By default, the script generates a monthly report based on the given month.
     * Optionally, you can also pass in January and "year" to generate a yearly report, e.g. `./[script].sh 2018-01 year`. Keep in mind, this is not well tested and depends heavily on whether the GitHub API will give you all the data for this given year.
 
+### Adding new monthly post
+
+1. In the `_posts` folder, copy the last month's post. Rename it to correspond the the month whose statistics you are posting
+2. Edit the post's heading information, changing the `title`, `month` and `month-text` fields
+3. Create a new, empty `_data` directory for the month.
+4. Run both scripts (see above) for the month. Place the two resulting CSV files in the newly created `_data` folder.
+5. Finally, test the addition by running Jekyll locally (see below).
+
 ## Testing this GitHub Pages site locally
 
 1. Install the [Jekyll](https://jekyllrb.com/) gem
@@ -69,3 +77,4 @@ The scripts that compile these statistics are available in `scripts/` folder. Th
     * Here's a good guide: https://help.github.com/articles/setting-up-your-github-pages-site-locally-with-jekyll/
 3. Clone this repo
 4. Run `jekyll serve`
+5. Access http://localhost:4000/
