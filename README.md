@@ -12,7 +12,7 @@ This GitHub Pages site lists the top [DSpace GitHub](https://github.com/DSpace) 
 
 ### Top Pull Request Creators (per month)
 
-The list of Top Pull Request creators is calculated based on the following:
+The list of Top Pull Request (PR) creators is calculated based on the following:
 * Pull Request MUST be created under a [DSpace GitHub](https://github.com/DSpace) project.
 * Pull Request MUST be created in that given month. Updates/changes to older PRs during that month are not considered.
 * Pull Request MUST be in the "open" or "merged" state. At this time, we do NOT count "closed" PRs, as it is assumed they were invalid and/or replaced by a different PR.
@@ -22,10 +22,11 @@ For the exact calculations, see the [recent-pr-creators.sh](https://github.com/t
 
 ### Top Pull Request Reviewers (per month)
 
-The list of Top Pull Request reviewers is calculated based on the following:
+The list of Top Pull Request (PR) reviewers is calculated based on the following:
 * The Review MUST be on a Pull Request created under a [DSpace GitHub](https://github.com/DSpace) project.
 * The Review MUST be a [GitHub Pull Request Review](https://help.github.com/articles/about-pull-request-reviews/). General comments on PRs are NOT included in the count.
-* The Review MUST be created in that given month. 
+* The Review MUST be created in that given month.
+* The Review CANNOT be submitted by the PR author. (_GitHub strangely allows PR authors to review their own PRs._)
 * Reviews are counted regardless of the status of the Pull Request (even if the PR is now "closed", your review is counted).
 * Only one review per Pull Request is counted. It is possible to submit multiple reviews per PR, but we are only counting the number of Pull Requests you have reviewed and NOT the number of reviews submitted.
 

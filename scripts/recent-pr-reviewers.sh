@@ -97,35 +97,40 @@ for GITHUB_ORG in $GITHUB_ORGS; do
       fi
 
       # Query in GitHub GraphQL format
-      # Query for the first 100 Pull Request updated within the given date range AND having >0 comments (all reviews are considered comments).
-      # SubQuery selects only PR Reviews (on returned PRs) which were created since the $START_DATE.
-      # This queries across all projects in the $GITHUB_ORG
-      # 
+      # Query for the first 50 Pull Request (across all projects in the $GITHUB_ORG), updated since the $START_DATE
+      # AND having >0 comments (In GitHub all reviews are considered comments).
+      # SubQuery selects the first 100 PR Reviews (per returned PR)
+      # (NOTE: This query does NOT consider $END_DATE because "updated" is the last updated date, and we also must
+      #  include PRs which have been updated (again) *since* END_DATE. Instead, we will use 'jq' below to parse out only
+      #  reviews that were created between $START_DATE and $END_DATE.)
+      #
       # Test this query online at https://developer.github.com/v4/explorer/
       # (When testing this query you may wish to append "sort:updated-asc" to see results in a logical order)
       #
-      # NOTE: Make sure to escape any double quotes (\\\") in query
-      # NOTE: Descreasing the "first" value of Issues returned to 50 makes this query less prone to response errors, but requires more pages to gather.
+      # NOTE: Make sure to escape any double quotes (\") in query
+      # NOTE: Decreasing the "first" value of Issues returned to 50 makes this query less prone to response errors, but requires more pages to gather.
       github_query="query {
-        search (first: 50, $CURSOR type: ISSUE, query:\"type:pr user:$GITHUB_ORG comments:>0 updated:$START_DATE..$END_DATE\") {
+        search (first: 50, $CURSOR type: ISSUE, query:\"type:pr user:$GITHUB_ORG comments:>0 updated:>=$START_DATE\") {
           edges {
             node {
               ... on PullRequest {
-                timeline(since:\"$START_DATE\", first:100) {
+                reviews(first:100) {
                   edges {
                     node {
-                      ... on PullRequestReview{
-                        url
-                        author {
-                          ... on User{
-                            login
-                            company
-                          }
+                      createdAt
+                      url
+                      author {
+                        ... on User{
+                          login
+                          company
                         }
-                        pullRequest {
-                          url
-                          state
-                          number
+                      }
+                      pullRequest {
+                        url
+                        state
+                        number
+                        author {
+                          login
                         }
                       }
                     }
@@ -204,16 +209,19 @@ for GITHUB_ORG in $GITHUB_ORGS; do
     # Good guide for complex queries: https://shapeshed.com/jq-json/
     #
     # Human explanation:
-    #    1. Return all "data.search.edges[].node.timeline.edges[]" from JSON *AS AN ARRAY*
+    #    1. Return all "data.search.edges[].node.reviews.edges[]" from JSON *AS AN ARRAY*
     #    2. Map that array to another array, filtering out only the reviews that reference a "pullRequest"
     #       (This filters out any empty nodes -- as the original JSON includes empty nodes for *comments* on PRs, as each review is also a comment)
-    #    3. Group them by Review author (.node.author.login)
-    #    4. Map them to a simple array of "user" (login & company), "reviewed" (URLs of PRs reviewed), filtering out any duplicate PRs
+    #    3. Filter that array (again) to only include reviews *created* between the $START_DATE and $END_DATE
+    #    4. Filter that array (again) to NOT include any reviews whose author is the same as the Pull Request author
+    #    5. Group them by Review author (.node.author.login)
+    #    6. Map them to a simple array of "user" (login & company), "reviewed" (URLs of PRs reviewed), filtering out any duplicate PRs
     #       (We filter duplicate PRs, as you can review a PR multiple times -- but we are counting only one review per PR)
-    #    5. Map that into a simple array of "user", "reviewed" and "count" (where count is number of reviewed PRs)
-    #    6. Sort that array by count (ascending)
-    #    7. Finally, reverse the order (to get descending sort -- highest number of reviews listed first)
-    jq_query='[ .data.search.edges[].node.timeline.edges[] ] | map(select (.node | has("pullRequest"))) | group_by(.node.author.login) | map( {user: [ .[0].node.author.login, .[0].node.author.company | rtrimstr(" ") ], reviewed: [.[].node.pullRequest.url] | unique | reverse }) | map( {user: .user, reviewed: .reviewed, count: .reviewed | length }) | sort_by(.count) | reverse'
+    #    7. Map that into a simple array of "user", "reviewed" and "count" (where count is number of reviewed PRs)
+    #    8. Sort that array by count (ascending)
+    #    9. Finally, reverse the order (to get descending sort -- highest number of reviews listed first)
+    # NOTE: Make sure to escape any double quotes (\") in query
+    jq_query="[ .data.search.edges[].node.reviews.edges[] ] | map(select (.node | has(\"pullRequest\"))) | map(select (.node | (.createdAt >= \"$START_DATE\") and (.createdAt < \"$END_DATE\"))) | map(select (.node | .author.login != .pullRequest.author.login)) | group_by(.node.author.login) | map( {user: [ .[0].node.author.login, .[0].node.author.company | rtrimstr(\" \") ], reviewed: [.[].node.pullRequest.url] | unique | reverse }) | map( {user: .user, reviewed: .reviewed, count: .reviewed | length }) | sort_by(.count) | reverse"
 
     # Uncomment next two lines to convert to CSV OUTPUT (with headers)
     # This does the following
